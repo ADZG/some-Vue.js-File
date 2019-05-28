@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+<body>
+    <div id="app">
+        <h3>{{msg}}</h3>
+        <input type="text" v-model="msg"> <!-- 这里双向绑定，数据可以m渲染到v， v可以传到m中 -->
+        <!-- 这里v-model不用写：  这个只能运用到表单元素中 -->
+        <input type="button" value="按钮">
+    </div>
+    <!-- v-bind只能实现数据的单向绑定  从m绑定到v中 -->
+</body>
+</html>
+<script>
+var vm=new Vue({
+    el:"#app",
+    data:{
+        msg:"测试"
+    },
+    methods: {
+        
+    }
+})
+</script>

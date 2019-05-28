@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-for="(item, index) in list" :key="index">{{item}}</p>  <!-- //遍历数组 -->
+       <p v-for="(val,key,i) in user"> {{val}}----------{{key}}</p>
+       <p v-if="see">看见了</p>
+        <p v-for="item in todu" v-bind:style="p_color" v-on:click="changeColor">{{item.text}}</p>
+    </div>
+</body>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            list:[1,2,3,4,5],
+            user:{
+                id:1,
+                name:"来住",
+                gander:"女"
+            },
+            todu:[{text:"一个"},{text:"两个"},{text:"三个"}],
+            see:false,
+            p_color:{"color":"red"}
+        },
+        methods: {
+           changeColor(){
+            this.p_color={"color":"green"}
+           }
+        },
+    })
+
+</script>
+</html>

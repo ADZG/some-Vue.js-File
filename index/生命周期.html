@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p ></p>
+  </div>
+</body>
+<script>
+var vm=new Vue({
+  el:"#app",
+  data:{
+    msg:"ok"
+  },
+  methods: {
+    show(){
+
+    }
+  },
+  beforeCreate() {//表示实例完全被创建出来执行的
+    console.log(this.msg)  //undifinde data和methods都没有被初始化
+  },
+  created() {
+    // 在此阶段，data和methods已经初始化好了，
+  },
+  beforeMount () {
+       //模板已经编译完成了，但是尚未把模板渲染到页面中去
+  },
+  mounted () {
+    //这个是实例创建的最后一个生命周期，此时如果没有其他操作的话，
+    // 这个实例就全部完成
+
+    // 如果要通过插件操作页面上的dom节点，最早在mounted
+    // 只要执行完成了这个阶段，整个实例已经完毕，此时组件已经脱离创建阶段，已经进入到运行阶段
+  }
+
+
+
+})
+
+</script>
+</html>

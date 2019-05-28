@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{msg | msgFormat("123","1222") | test}</p>
+    </div>
+</body>
+    <script>
+        // 这里过滤器只在v-bind 和 mustache中
+        // 也就是插值表达式中
+        // 管道符的前面的值，是要传给过滤器的处理的,永远都是管道符前面传过来的数据
+        //定义一个Vue全局过滤器，名字为msgformat
+        // 第一个名称过滤器的名称，第二个回调的参数是要对传过来的值做什么处理的值
+
+        // 实际上就是将传入上面的值，拿下这个过滤器处理，替换修改数据等等
+        // 回调函数第一个位置是管道符前面的参数，后面的位置，可以传递多个
+
+
+        Vue.filter("msgFormat", function (msg,arg,jjs) {
+           return msg.replace(/新的/g,arg+jjs)
+        })
+        new Vue({
+            el: "#app",
+            data: {
+                meg: "新的消息"
+            }
+        })
+
+        // 可以加多个过滤器  先把msg给后面的msgformat处理，再将结果  交给管道后面的过滤器再处理
+        Vue.filter("test", function(msg){
+            return msg+"======="
+        })
+
+
+    </script>
+</html>

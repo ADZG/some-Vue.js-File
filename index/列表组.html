@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+  <link rel="stylesheet" href="../index/animation.css">
+  <style>
+    .promt{
+      width: 400px;
+      height: 200px;
+      background-color: deeppink;
+      border-radius: 100px;
+      margin: auto;
+    }
+    button{
+      background-color: antiquewhite;
+    }
+    a{
+      color: red
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="width: 800px; margin: auto;text-align: center">
+    <div>
+      编号:<input type="text" v-model="info.id" v-focu />品牌名称:<input type="text" v-model="info.name" />
+      <input type="button" value="添加" v-on:click="add" />
+    </div>
+    <div>
+      品牌名称:
+      <input type="text" placeholder="请输入搜索条件" v-model="keypass" v-setcolor="red" />
+    </div>
+    <table v-bind:style="colors" border="1" width="800">
+      <thead>
+        <td>编号</td>
+        <td>品牌名称</td>
+        <td>创建时间</td>
+        <td>操作</td>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in list" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{item.name}}</td>
+          <td>{{time | formate}}</td>
+          <td><a href="javascript:;" v-on:click="hand(index)">删除</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <transition enter-active-class="animated rollIn" leave-active-class="animated rollOut">
+    <div v-if="flag" class="promt">
+      <h1>确定删除吗</h1>
+      <button><a href="#" v-on:click="del">确认</a></button>
+      <button v-on:click="flag"><a href="#" v-on:click="off">取消哦</a></button>
+    </div>
+    </transition>
+  </div>
+</body>
+<script src="./mon.js"></script>
+<script>
+  var vm = new Vue({
+    el: "#app",
+    data: {
+      delid:"",
+      flag:false,
+      time: new Date(),
+      red: "deeppink",
+      keypass: "",
+      colors: { width: "800px", "text-align": "center" },
+      list: [
+        {
+          id: 1,
+          name: "DZ",
+          time: new Date(),
+        }, {
+          id: 2,
+          name: "BSJ",
+          time: new Date()
+        }, {
+          id: 3,
+          name: "WLHG",
+          time: new Date()
+        }
+      ],
+      newlist: [
+        {
+          id: 1,
+          name: "DZ",
+          time: new Date(),
+        }, {
+          id: 2,
+          name: "BSJ",
+          time: new Date()
+        }, {
+          id: 3,
+          name: "WLHG",
+          time: new Date()
+        }
+      ],
+      info: {
+        id: "",
+        name: "",
+        time: new Date()
+      }
+    },
+    methods: {
+      del() {
+        this.list.splice(this.delid, 1)
+        this.flag= !this.flag
+      },
+      hand(index){
+        this.flag= !this.flag
+        this.delid=index
+      },
+      off(){
+        this.flag = !this.flag
+      },
+      add() {
+        this.list.push(this.info)
+        this.info = {
+          id: "",
+          name: "",
+          time: ""
+        }
+        this.newlist=this.list  
+        // 侦听器筛选时，将新的数据，赋值给了旧的数据，添加的时候，也要将新旧数据同步
+        // 这里的等于，想当于给info重新赋值了一个新对象，只是其中的键值是一样的
+      }
+    },
+    filters: {
+      formate: function (time) {
+        if (time) {
+          var date = new Date(time);
+          var y = date.getFullYear();
+          var m = date.getMonth() + 1; //由于月份是从0开始的
+          var d = date.getDate();
+          return `${y}-${m}-${d}`
+        }
+        // return moment(time).format("YYYY-MM-DD")
+
+      }
+    },
+    // computed: {
+    //   getdata:function(){
+    //    return this.list.filter(item=>{
+    //      //这里的item是遍历的每一个元素，不要加this啊，哎
+    //      return item.name.includes(this.keypass)
+    //     })
+    //   }
+    // },
+    directives: {
+      setcolor: {
+        inserted:function(el, binding) {//在dom结构构件完成，页面还没呈现在客户端的时候插入
+          el.style.color = binding.value
+          // console.log(binding)
+        }
+      },
+      focu: {
+        inserted(el) {
+          el.focus()
+        }
+      }
+    },
+    watch: {
+      "keypass":function(newval,oldval){
+        // oldval在搜索框之前为空
+        // newval就是搜索框的值
+        // 
+        
+        this.list=this.newlist.filter(item=>item.name.indexOf(newval)!=-1)
+      }
+    }
+  })
+</script>

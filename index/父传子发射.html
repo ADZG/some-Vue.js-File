@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+
+    </div>
+
+    <template id="fathertemp">
+      <div>
+        <p>{{record}}</p>
+      </div>
+    </template>
+    <template id="sontemp">
+      <div>
+        <p>{{}}</p>
+      </div>
+    </template>
+
+
+    <script>
+      
+      var bus=new Vue()
+      Vue.component("father",{
+        template:"#fathertemp",
+        data () {
+          return {
+            record:"数据中心"
+          }
+        },
+        mounted() {
+          bus.$emit("send",this.record)
+        },
+        component:{
+          "son":{
+            template:"#sontemp",
+            data() {
+              return {
+                mycord:""
+              }
+            },
+            mounted () {
+              bus.on("send",(data)=>{
+                this.mycord=data
+              })
+            }
+          }
+        }
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+        <father>
+
+        </father>
+        
+    </div>
+    <template id="fathertemp">
+      <div class="father">
+        <p>{{soname}}</p>
+        <son v-on:getname="getson"></son>
+      </div>
+    </template>
+
+    <template id="sontemp">
+      <div class="son">
+       <a href="#" v-on:click="telldate">发送数据给父模板</a>
+      </div>
+    </template>
+    <script>
+      Vue.component("father",{//配置
+        template:"#fathertemp",
+        data () {
+          return {
+            soname:""
+          }
+        },
+        methods: {
+          getson(data){
+            console.log(data)
+            this.soname=data
+          }
+        },
+        components:{
+          "son":{
+            template:"#sontemp",
+            data () {
+              return {
+                name:"我的名字"
+              }
+            },
+            methods:{
+              telldate() {
+                this.$emit("getname", this.name)
+              }
+            }
+          }
+        }
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

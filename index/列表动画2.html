@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+  <style>
+    li {
+      list-style: none;
+      height: 80px;
+      border: 1px dashed #66ccff;
+      line-height: 80px;
+      
+    }
+    li:hover{
+      background-color: deeppink;
+      transition: all 1s ease
+    }
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 1s ease
+    }
+
+    .v-move {
+      transition: all 2s ease
+    }
+    .v-leave-active{
+      position: absolute
+    }
+  </style>
+</head>
+
+<body>
+  <!-- appear页面刚入场的效果 -->
+  <!-- 如果是v-for创建的元素设置动画，必须给每一个元素设置：key属性
+  给transition-group添加appear属性，实现页面展示出来时候，入场时候的效果
+  通过transition-group元素设置tag属性，执行他渲染为制定的元素，如果
+  不制定，则默认渲染为span -->
+  <div id="app">
+    姓名<input type="text" v-model="text.name"> 序号<input type="text" v-model="text.time"> <input type="button"
+      v-on:click="hand" value="添加">
+      <transition-group appear tag="ul">
+        <li v-for="(item,index) in list" :key="item.id">
+          <!-- 动画这里要写键才可以出效果 -->
+          {{item.id=index+1}}---------{{item.name}}----------{{item.time}}
+          <a href="javascript:;" v-on:click="del(index)">删除</a>
+        </li>
+      </transition-group>
+  </div>
+</body>
+<script>
+  var vm = new Vue({
+    el: "#app",
+
+    data: {
+      text: {
+        id: "",
+        name: "",
+        time: ""
+      },
+      list: [
+        {
+          id: 1,
+          name: "DZ",
+          time: new Date(),
+        }, {
+          id: 2,
+          name: "BSJ",
+          time: new Date()
+        }, {
+          id: 3,
+          name: "WLHG",
+          time: new Date()
+        }
+      ]
+    },
+    methods: {
+      hand() {
+        this.text.time = new Date()
+        this.list.push(this.text)
+        this.text = {
+          id: "",
+          name: "",
+          time: ""
+        }
+      },
+      del(index) {
+        this.list.splice(index, 1)
+      }
+    },
+  })
+
+</script>
+
+</html>

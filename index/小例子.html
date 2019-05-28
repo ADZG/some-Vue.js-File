@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+</head>
+
+<body>
+    <!-- 控制的区域 -->
+    <div id="app">
+        <input type="button" value="按钮1" @click="lang">
+        <input type="button" value="按钮2" @click="stop">
+        <h3>{{msg}}</h3>
+    </div>
+
+
+    <script>
+
+        // 在vm实例中，如果想要调用data上的数据，或者想要调用methods中的方法
+        // 必须通过this属性，或者this.方法名，进行访问，这里的this指的当前vm对象
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "继续加油",
+                timeid:null,//在这里保存定时器id
+            },
+            methods:{
+                lang(){
+                    // 注意此时的定时器的内的this指向为window，可以用箭头函数，定向该函数的上一级对象
+                    // 则指向的是vm实例才
+                    // 箭头函数内部的this，永远和外面一层的this指向一致
+                    // 这里不能直接用变量保存id，因为函数作用域的问题，外面是拿不到函数内部的变量的
+                    // 所以在data里面定义一个属性，来保存id值
+                    if(this.timeid!==null){
+                        return false //当定时器的值等于null的时候，才会执行定时器
+                    }
+                this.timeid= setInterval(()=>{
+                     // 获取到0位置的第一个字符    
+                       var start = this.msg.substring(0, 1)
+                       // 获取1位置到后面的所有字符
+                       var end = this.msg.substring(1)
+                       // 重新拼接得到新的字符，并且赋值给this.msg
+                       this.msg = end + start
+                   },500)
+                },
+                stop(){
+                    clearInterval(this.timeid)
+                    this.timeid(null)//每次清除定时器后，需要重新赋值为null
+                }
+            }
+        })
+
+        // //Vm会监听自己身上的data中所有数据的改变，只要数据发生改变，立刻
+        // 会同步到页面上,我们就只需要关心数据了，不用考虑怎么渲染页面了
+    </script>
+</body>
+
+</html>

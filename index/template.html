@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <mycom></mycom> 
+    <template id="srco">
+      <div>
+        <p>局部模板</p>
+        <h3>可以</h3>
+      </div>
+    </template>
+    <!-- 如果要使用组建，直接将组件的名称，以标签的形式 -->
+
+    <tempname> </tempname>
+  </div>
+
+  
+
+
+  <template id="mysec">
+    <!-- 组件里面只能有一个根元素 -->
+    <div>
+    <h3>组件的temp</h3>
+    <input type="text">
+    <p>新的模板文件</p>
+  </div>
+  </template>
+</body>
+<script>
+  // 使用Vue.extend 创建全局Vue组件，粗存在变量中
+  // var com=Vue.extend({
+  //   template:"<h2>这是模板创建的</h2>"
+  //   //通过template 指定了要显示的html结构
+  // })
+  
+  Vue.component("tempname",{
+    template:"#mysec"
+  })
+//  使用 Vue.component("组建的名称",创建出的模板对象)
+Vue.component("mycom",{
+  template: "<h2>这是模板创建的{{msg}}</h2>",
+  data: function () {
+    //如果定义多个模板，则每个模板的变量都会不一样
+    return {
+      msg: "这是组件中data自己定义的属性"
+      // 在组件中创建的自定义属性，一定要用函数的模式
+    }
+  }
+})
+
+
+
+var vm= new Vue({
+  el:"#app",
+  data:function() {
+    return {
+     
+    }
+  },
+  methods: {
+    
+  },
+  components: {
+    template:"#srco", //模板 后面是要模板的id
+    //在元素中加一个template标签，中写加上要给的赋值，
+    //定义实力内部私有组建的
+  },
+  filters: {
+    // 过滤器 格式化日期等等
+  },
+  computed: {
+    //计算属性 筛选数据，操作数组等等
+  },
+  directives: {
+    //自定义属性，设置dom事件等
+  },
+  beforeCreate() {//下面都是钩子函数了
+    
+  },
+  created() {
+    
+  },
+  mounted () {
+    
+  },
+  updated() {
+    
+  },
+})
+</script>
+</html>

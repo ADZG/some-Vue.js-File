@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./animation.css">
+  <script src="../vue/vue.js"></script>
+  <style>
+    /* 进入之前，元素的起始状态，时间点，此时还没有开始进入
+     */
+     /* 动画离开之后，离开的终止状态，动画已经结束，事件点 */
+     /* rollin  rollout */
+    /* .v-enter, 
+    .v-leave-to{
+      opacity: 0;
+      transform: translateX(100px)
+    } */
+    /* 入场动画的时间段
+    离场动画的时间段 */
+    /* .v-enter-active,
+    .v-leave-active{
+      transition: all 1s 
+    */ 
+
+  </style>
+</head>
+<!-- duration 入场和离场的动画市场 -->
+<body>
+  <div id="app">
+    <input type="button" value="动画" v-on:click="flag= !flag">
+    <transition enter-active-class="animated zoomOutRight"  leave-active-class="animated zoomOutUp">   
+      <!-- 这个元素是Vue官方提供的 ,将要做动画的元素包裹起来-->
+    <p v-if="flag">{{msg}}</p>
+    </transition>
+  </div>
+
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        flag: false,
+        msg:"动画韩丽"
+      },
+      methods: {
+        
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>

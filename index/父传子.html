@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <father>
+      </father>
+    </div>
+
+
+    <template id="sontemp">
+      <div >
+        <p>{{myname}}</p>
+      </div>
+    </template>
+
+
+    <template id="fathertemp">
+      <div>
+         <p>父模板</p>
+         <son v-bind:myname="sonname"></son>
+      </div>
+    </template>
+    <script>
+      Vue.component("father",{
+        template:"#fathertemp",
+        data() {
+          return {
+            sonname:"new"
+          }
+        },
+        components:{
+           "son":{
+             template:"#sontemp",
+             props:["myname"],
+             data () {
+               return {
+
+               }
+             }
+           }
+        }
+      })
+
+
+
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

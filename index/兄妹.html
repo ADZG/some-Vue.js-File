@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <borther></borther>
+      <sister></sister>
+
+    </div>
+    <template id="borthertemp">
+      <div>
+        如果出现数据是粗体
+        <h2>{{newrecord}}</h2>
+      </div>
+    </template>
+    <template id="sistertemp">
+      <div>
+        <p>{{record}}</p>
+      </div>
+    </template>
+    <script>
+      var bus=new Vue()
+
+
+      Vue.component("borther",{
+        template:"#borthertemp",
+        data () {
+          return {
+            newrecord:""
+          }
+        },
+        mounted() {
+          bus.$on("getdata",(data)=>{
+            this.newrecord=data
+          })
+        },
+      })
+
+      Vue.component("sister",{
+        template:"#sistertemp",
+        data() {
+          return {
+            record:"数据中心"
+          }
+        },
+        mounted () {
+          bus.$emit("getdata",this.record) //使用事件总线的发送对象来发送事件和数据
+        }
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

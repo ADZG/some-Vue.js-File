@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <borther></borther>
+
+      <sister></sister>
+
+    </div>
+    
+
+    <template id="borthertemp">
+      <div>
+          <a href="#" v-on:click="tellmsg">发射数据</a>
+      </div>
+    </template>
+
+    <template id="sistertemp">
+      <div>
+        <p>{{newmsg}}</p>
+      </div>
+    </template>
+    <script>
+      var bus=new Vue() //事件
+      Vue.component("borther",{//配置
+        template:"#borthertemp",
+        data() {
+          return {
+            msg:"传递成功"
+          }
+        },
+        methods:{
+          tellmsg(){
+            bus.$emit("getname",this.msg)
+          }
+        }
+      })
+      Vue.component("sister",{
+        template:"#sistertemp",
+        data() {
+          return {
+            newmsg:""
+          }
+        },
+        mounted() {
+          bus.$on("getname",(data)=>{
+            this.newmsg=data
+          })
+        },
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

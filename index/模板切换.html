@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <a href="#" v-on:click.prevent="componentId='mytemp'">注册</a>
+    <a href="#" v-on:click.prevent="componentId='load'">登录</a>
+    <component :is="componentId">
+      <!-- 可以用来展示指定组件的名称 -->
+    </component> 
+  </div>
+  <template id="temp">
+    <p>全局定义的注册组件</p>
+  </template>
+  <template id="loading">
+    <p>全局定义的登录组件</p>
+  </template>
+
+  <script>
+
+  Vue.component("mytemp",{
+    template:"#temp"
+  })
+
+  Vue.component("load",{
+    template:"#loading"
+  })
+  var vm=new Vue({
+      el:"#app",
+      data:{
+        componentId: "",
+      },
+      methods: {
+        
+      },
+  })
+  
+  </script>
+</body>
+</html>

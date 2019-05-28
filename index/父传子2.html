@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    
+    <div id="app">
+      <top>
+      </top>
+    </div>
+
+
+    <template id="toptemp">
+      <div class="temp2">
+        <buttom v-bind:res="name"></buttom>
+      </div>
+    </template>
+
+    <template id="buttemp">
+      <div class="temp">
+        <p>这是子组件</p>
+        <p>{{res}}</p>
+      </div>
+    </template>
+
+    <script>
+
+      Vue.component("top",{
+        template:"#toptemp",
+          data() {
+            return {
+              name:"一个"
+            }
+          },
+        components:{
+          "buttom":{
+            template:"#buttemp",
+            props: ["res"],
+          }
+        }
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+    <style>
+    
+    [v-cloak]{
+        display: none;
+    }
+    /* 使用v-cloak可以解决差值表达式闪烁的问题 */
+    
+    </style>
+</head>
+
+<body>
+    <!-- 将来new的vue的实例，会一直控制该区域
+     -->
+    <!-- Vue实例控制的这个元素区域，就是我们的V -->
+    <!-- new出来的vm对象，就是我们MVVM中的VM 调度者 -->
+    <div id="app">
+        <!-- 使用v-cloak可以解决插值表达式闪烁的问题 -->
+        <p v-cloak>++++++{{msg}}++++++</p>  <!-- 只会清空+ -->
+        <h4 v-text="msg">1=========</h4>  <!-- 会将原本的内容都清空 -->
+        <!-- v-text会覆盖元素中原本的内容，插值表达式只会替换自己的占位符，
+        不会把整个内容清空 -->
+        <h5 v-text="msg">1 {msg}========</h5>
+    </div>
+    <div v-html="msg2">{{msg2}}</div>   <!-- 也会覆盖内部的内容，会把msg的标签解析 -->
+    <script>
+        var vm = new Vue({//创建实例vue实例对象 导入js后，就会有一个Vue对象
+            el: "#app",//表示，当前我们new的这个对象，要控制哪一块区域
+            // 这里data就是MVVM中M。专门用来保存每个页面的数据
+            data: {// data属性中，存放的是el里面要用到的数据 
+                msg: "试水",//通过vue命令，方便的将数据渲染到页面上
+                msg2:"<h2>第二个</h2>"
+            }
+        })
+    </script>
+</body>
+
+</html>

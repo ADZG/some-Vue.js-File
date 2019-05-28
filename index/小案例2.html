@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+    <style>
+    .red{
+        background-color: brown
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="n0">
+        <select v-model="op">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model="n1">
+        <input type="button" v-on:click="res" value="=">
+        <input type="text" v-model="result">
+        <!-- classobj间接的获取了样式，通过该对象 -->
+        <h3 v-bind:class="classobj">12</h3>
+        <h4 v-bind:style="styleobj">12</h4><!-- //行内样式也可以将样式内的属性，放在一个对象内 -->
+    <div>
+</body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            n0: 0,
+            n1: 0,
+            result: 0,
+            op: '-',
+            classobj:{red:true,blue:false},//保存了类名里面的样式属性，做成一个对象的方式，
+            styleobj:{"background-color":"red"}
+        },
+        methods: {
+            res() {
+                // switch (this.op) {
+                //     case '+':
+                //         this.result = parseInt(this.n0) + parseInt(this.n1)
+                //         break;
+                //     case '-':
+                //         this.result = parseInt(this.n0) - parseInt(this.n1)
+                //         break;
+                //     case '*':
+                //         this.result = parseInt(this.n0) * parseInt(this.n1)
+                //         break;
+                //     case '/':
+                //         this.result = parseInt(this.n0) / parseInt(this.n1)
+                //         break;
+                // }
+                var codestr= "parseInt(this.n0)"+this.op+" parseInt(this.n1)"
+                this.result=eval(codestr)
+            }
+        },
+    })
+</script>
+
+</html>

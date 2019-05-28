@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue/vue.js"></script>
+    <style>
+        .active {
+            color: aqua
+        }
+
+        .optional {
+            color: pink
+        }
+
+        .thin {
+            color: darkorange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <table>
+            <tr>{{msg}}<input type="text"></tr>
+            <h1 v-bind:class="[item,{'active':flag}]">数组和对象的集合，对象的值为一个标识符</h1>
+            <!-- 对象属性的引号是可带可不带的  属性的值是一个标识符 -->
+            <h2 v-bind:class="classobj">在绑定的属性中添加样式类名</h2>
+            <!-- 对象就是无序键值对的集合 -->
+            <!-- 如果属性里面的键带横线，要加引号的 -->
+            <h3 v-bind:style="[colors,fonts]">这里是行内样式的多个键值对的数组方式</h3>
+            <tr>
+                <td v-for="(value,index) in list">{{value.text}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
+<script>
+    new Vue({
+        el: "#app",
+        // data:{
+        //     colors:{"color":"blue"},
+        //     msg:"测试"
+        // },
+        data: function () {
+            return {
+                colors: { "color": "blue" },
+                msg: "测试",
+                flag: true,
+                classobj: { optional: true, thin: false },
+                list: [{ text: "一个" },{ text: "两个" },{ text: "三个" }]
+            }
+        }
+    })
+
+</script>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <script src="../vue/vue.js"></script>
+  <script src="../vue/axios.js"></script>
+  <style></style>
+</head>
+
+<body>
+  <div id="app">
+
+    <div>
+      编号:<input type="text" v-model="info.id" ref="fo" v-setcolor="colorin" v-focus />品牌名称:<input type="text"
+        v-model="info.brand" v-on:keyup.enter="add" />
+      <input type="button" value="添加" v-on:click.stop="add" />
+    </div>
+    <div>
+      品牌名称:
+      <input type="text" placeholder="请输入搜索条件" v-model="keypass" />
+    </div>
+    <table v-bind:style="colors" border="1">
+      <thead>
+        <td>编号</td>
+        <td>品牌名称</td>
+        <td>创建时间</td>
+        <td>操作</td>
+      </thead>
+      <tbody>
+        <!-- 在v-for的数据红，都是直接从data上的list中直接渲染过来的
+                现在，我们自定义了一个search1的方法，同时把所有的关键字，通过传参的形式，传递给了search方法 -->
+        <!-- 在search方法内部，通过执行for循环，把所有符合搜索关键字的数据，保存在一个新数组中返回 -->
+        <tr v-for="(item,index) in  getdata" :key="item.index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.ctime }}</td>
+          <td><a href="javascript:;" v-on:click="del(index)">删除</a></td>
+        </tr>
+        <tr v-if="getdata.length==0">
+          <td>没有数据</td>
+        </tr>
+        <tr>
+          <td>{{ datestr | dataforma }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script src="./mon.js"></script>
+<script>
+  // 过滤器的方式格式化日期对象、
+  // 全局过滤器，所有的vm实例都可以使用
+  // Vue.filter("dataforma", function (datestr) {
+  //     if(datestr){
+  //         var date = new Date(datestr)
+  //         var y = date.getFullYear()
+  //         var m = date.getMonth() + 1 //由于月份是从0开始的
+  //         var d = date.getDay()
+  //         return `${y}-${m}-${d}`
+  //     }
+  // })
+  // Vue.directive("focus",{//配置,对象格式
+  //     inserted:function(el,binding){
+  //       el.focus()//当前调用的元素触发事件
+  //     }
+  // })
+
+  // Vue.directive("setcolor",{
+  //   inserted(el,binding){  //在dom解析完毕，还没有呈现的时候执行，
+  //     // binding是当前el元素的所有属性，比如value，name等扥
+  //     el.style.color=binding.value
+  //     console.log(binding)
+  //   }
+  // })
+  var vm = new Vue({
+    el: "#app",
+    data: {
+      keypass: "", //搜索关键字
+      colorin: "red",
+      info: {
+        id: "",
+        name: "",
+      },
+      list:[],
+      colors: { width: "800px", "text-align": "center" },
+      datestr: new Date()
+    },
+    methods: {
+      add() {
+        this.info.set = moment(new Date()).format("YYYY-MM-DD-HH-mm-ss");
+        this.list.push(this.info);
+        this.info = {
+          id: "",
+          brand: "",
+          set: ""
+        }
+      },
+      del(index) {
+        // // 这个方法的返回的就匹配元素的索引
+        // var index = this.list.findIndex((item) => {//item为查找的元素
+        //     return item.id == id  //如果查找的时候，有一个元素的id等于传进来的id
+        // })
+        // this.list.splice(index, 1)
+        this.list.splice(index, 1);
+      },
+      getList(){
+          var url = 'http://www.liulongbin.top:3005/api/getprodlist'
+          axios.get(url)
+            .then(res => {
+              this.list = res.data.message
+              console.log(this.list)
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        }
+      },
+    // 生存周期的钩子
+    // 在页面生成的不同阶段，执行动作的api，作用就是只要页面到了某个阶段，就会自动触发这个对应钩子里的js
+    // mounted是已完成模板，已经渲染，或者el对应html渲染后执行的js
+    mounted(){
+        this.getList()
+    },
+    // 筛选器
+    filters: {
+      //定义私有过滤器 有两个条件，过滤器名称和处理函数，
+      // 回调里面的是过滤器要处理的数据
+      dataforma: function (datestr) {
+        if (datestr) {
+          var date = new Date(datestr);
+          var y = date.getFullYear();
+          var m = date.getMonth() + 1; //由于月份是从0开始的
+          var d = date.getDay();
+          return `${y}-${m}-${d}` + "--------";
+        }
+      }
+      // 过滤器调用都是就近原则，如果全局和私有都有过滤器，优先调用私有过滤器
+    },
+    // 自定义指令
+    directives: {
+      //局部的自动聚焦功能
+      focus: {
+        inserted: function (el, binding) {
+          el.focus(); //当前调用的元素触发事件
+        }
+      },
+      setcolor: {
+        inserted: function (el, binding) {
+          el.style.color = binding.value;
+          console.log(binding);
+        }
+      }
+    },
+    // 计算属性
+    computed:{
+      getdata: function(){
+        return this.list.filter(function(item){
+          //返回的h是符合规则的元素，最后组成数组返回
+          // return item.brand.toUpperCase().indexOf(this.keypass.toUpperCase())!=-1
+          return item.name.indexOf(this.keypass)!=-1
+          // 将item转为大写之后，查看keypass输入进来的值，是否有跟item.name相互匹配，如果匹配，则返回该元素，
+        });
+      }
+    }
+  });
+  // console.log(vm.$data.list);
+  // var time = vm.$data.list;
+  // for (let i = 0; i < time.length; i++) {
+  //   time[i].set = moment(new Date(Date())).format("YYYY-MM-DD-HH-mm-ss");
+  // }
+</script>
+
+</html>

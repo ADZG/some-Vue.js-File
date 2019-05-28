@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vue/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <father></father>
+    </div>
+    <template id="fathertemp">
+      <div class="fathertemp">
+        <p>{{record}}</p>
+        <son v-on:send="getmsg"></son>
+        <!-- 监听send事件 -->
+      </div>
+    </template>
+    <template id="sontemp">
+      <div class="sontemp">
+        <p>{{newcord}}</p>
+        <a href="#" v-on:click="tellmsg">发送</a>
+      </div>
+    </template>
+    <script>
+      var bus=new Vue()
+      Vue.component("father",{
+        template:"#fathertemp",
+        data () {
+          return {
+            record:""
+          }
+        },
+        methods:{
+          getmsg(data){
+            this.record=data
+          }
+        },
+        components: {
+          son:{
+            template:"#sontemp",
+            data () {
+              return {
+                newcord:"发射过去了"
+              }
+            },
+            methods: {
+               tellmsg() {
+                this.$emit("send", this.newcord)
+              }
+            }
+          }
+        }
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+
+        }
+      })
+    </script>
+  </body>
+</html>
